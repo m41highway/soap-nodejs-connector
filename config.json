@@ -1,7 +1,8 @@
 {
     "rq": {
-        "AccountNumber": "xxxxxxxxxxx",
-        "Password": "xxxxxxxxxxx",
-        "UserName": "xxxxxxxxxxx"
+        "AccountNumber": "MCN000289",
+        "Password": "TRAE2017_xml",
+        "UserName": "TRAEXML",
+        "url": "http://onepointdemo.myfarebox.com/V2/OnePoint.svc?wsdl"
     }
 }

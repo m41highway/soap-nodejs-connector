@@ -8,22 +8,26 @@ soap.createClient(url, function(err, client) {
     // -----------------------------------------------
     // View all the methods
     // -----------------------------------------------
-    // console.log(client.describe());
+    console.log(client.describe());
 
     // -----------------------------------------------
     // View the specific method
     // -----------------------------------------------
-    // console.log(client.describe().OnePoint.BasicHttpBinding_IOnePoint.CreateSession);
+    console.log(client.describe().OnePoint.BasicHttpBinding_IOnePoint.CreateSession);
 
-    client.CreateSession(config, function(err, result) {
-        if (err) console.log(err);
+    console.log(client.describe().OnePoint.BasicHttpBinding_IOnePoint.AirLowFareSearch);
 
-        if (result.CreateSessionResult.Errors) {
-            console.log('Error occurs from SOAP server');
-            console.log(result.CreateSessionResult.Errors);
-        }
 
-        console.log('Success');
-        console.log(result.CreateSessionResult);
-    });
+
+    // client.CreateSession(config, function(err, result) {
+    //     if (err) console.log(err);
+
+    //     if (result.CreateSessionResult.Errors) {
+    //         console.log('Error occurs from SOAP server');
+    //         console.log(result.CreateSessionResult.Errors);
+    //     }
+
+    //     console.log('Success');
+    //     console.log(result.CreateSessionResult);
+    // });
 });
