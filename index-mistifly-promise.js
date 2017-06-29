@@ -1,4 +1,4 @@
-const sessionManager = require('./session-manager');
+const proxy = require('./mistifly-proxy');
 
 let clientStub;
 let tempSessionId;
@@ -7,7 +7,7 @@ let tempSessionId;
 // Step 1: Init proxy
 // ------------------------------
 console.log('----- Step 1": Init proxy -----');
-sessionManager.createClient
+proxy.createClient
 
 
 .then(function (client) {
@@ -19,7 +19,7 @@ sessionManager.createClient
     // Step 2: Create session
     // ------------------------------
     console.log('----- Step 2": Create Session -----');
-    return sessionManager.createSessionPromise(client)
+    return proxy.createSessionPromise(client)
 })
 
 
@@ -47,7 +47,7 @@ sessionManager.createClient
     };
 
     console.log('----- Step 3": Low Fare Search -----');
-    return sessionManager.airLowFareSearchPromise(clientStub, result.CreateSessionResult.SessionId, options);
+    return proxy.airLowFareSearchPromise(clientStub, result.CreateSessionResult.SessionId, options);
 })
 .then( (res) => {
 
@@ -100,17 +100,16 @@ sessionManager.createClient
 
     let options = {
         rq: {
-            FareSourceCode: simplifiedList[0].fareSourceCode,
+            FareSourceCode: simplifiedList[1].fareSourceCode,
             SessionId: tempSessionId,
             Target: 'Test'
         }
-
     }
 
     // console.log(tempSessionId);
     console.log(options);
 
-    return sessionManager.airRevalidatePromise(clientStub, tempSessionId, options)
+    return proxy.airRevalidatePromise(clientStub, tempSessionId, options)
 })
 
 .then(function(res){
@@ -124,7 +123,102 @@ sessionManager.createClient
     }
 
     console.log(res.AirRevalidateResult.PricedItineraries.PricedItinerary);
+
+    console.log('--------------------------');
+    console.log(res.AirRevalidateResult.PricedItineraries.PricedItinerary.AirItineraryPricingInfo.FareInfos);
+    console.log(res.AirRevalidateResult.PricedItineraries.PricedItinerary.AirItineraryPricingInfo.ItinTotalFare);
+    console.log(res.AirRevalidateResult.PricedItineraries.PricedItinerary.AirItineraryPricingInfo.PTC_FareBreakdowns);
+
+    let airItineraryPricingInfo = res.AirRevalidateResult.PricedItineraries.PricedItinerary.AirItineraryPricingInfo;
+
+
+
+
+    console.log('----- Step 5": Book -----');
+
+    let options = {
+        rq: {
+            FareSourceCode: airItineraryPricingInfo.FareSourceCode,
+            SessionId: tempSessionId,
+            TravelerInfo:{
+                AirTravelers: {
+                    AirTraveler: [
+                        {
+                            Gender: 'F',
+                            PassengerName: {
+                                PassengerFirstName: 'Testing',
+                                PassengerLastName: 'Tester',
+                                PassengerTitle: 'MRS' // MR/MRS/Sir/Lord/Lady/Miss/Inf
+                            },
+                            PassengerType: 'ADT', // ADT, CHD, INF
+                            Email: 'anthony.ng@travie.co',
+                        }
+                    ]
+
+                    // AirTraveler: [
+                    //     {
+                    //         PassengerType: 'ADT', // ADT, CHD, INF
+                    //         Gender: 'M',
+                    //         PassengerName: {
+                    //             PassengerTitle: 'Mr', // Mr/Mrs/Sir/Lord/Lady/Miss/Inf
+                    //             PassengerFirstName: 'Testing',
+                    //             PassengerLastName: 'Tester',
+                    //         },
+                    //         DateOfBirth: '1982-05-15T00:00:00',
+                    //         FrequentFlyerNumber: 'BA4356789', // It specifies the passenger frequent flyer number preceding with the Yes two letters IATA airline code.
+                    //         Passport: {
+                    //             PassportNumber: 'ABC455767453',
+                    //             ExpiryDate: '2020-01-16T00:00:00',
+                    //             Country: 'IN',
+                    //         },
+                    //         ExtraServices1_1: {
+                    //             Services: {
+                    //                 ExtraServiceId: 2
+                    //             }
+                    //         },
+                    //         ExtraServices: {
+                    //             Services: {
+                    //                 ExtraServiceId: 2,
+                    //                 Quantity: 1
+                    //             }
+                    //         },
+                    //         AreaCode: 66,
+                    //         CountryCode: 852,
+                    //         Email: 'anthony.ng@travie.co',
+                    //         PhoneNumber: 65789487
+                    //     }
+                    // ]
+                }
+            },
+            Target: 'Test'
+        }
+    }
+
+    return proxy.airBookPromise(clientStub, tempSessionId, options)
+
 })
+
+.then(function(res) {
+
+    console.log(res);
+
+    if (res.BookFlightResult.Errors) {
+        console.log(res.BookFlightResult.Errors.Error);
+    }
+
+
+// Sample successful
+// { Errors: null,
+//      Status: 'CONFIRMED',
+//      Success: 'true',
+//      Target: 'Default',
+//      TktTimeLimit: '2017-06-30T02:29:59',
+//      UniqueID: 'MF01598517' }
+
+
+})
+
+
 
 .catch( (error) => {
     console.log(error);

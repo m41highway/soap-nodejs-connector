@@ -76,10 +76,28 @@ const airRevalidatePromise = function (client, sessionId, options) {
     })
 }
 
+// -------------------------------------
+// Promisify airBook
+// -------------------------------------
+const airBookPromise = function(client, sessionId, options) {
+    return new Promise(function (resolve, reject){
+
+        // console.log('client object', client);
+
+        client.BookFlight(options, function(err, response){
+            if (err) {
+                return reject(err);
+            }
+
+            return resolve(response);
+        })
+    })
+}
 
 module.exports = {
     createClient: createClient,
     createSessionPromise: createSessionPromise,
     airLowFareSearchPromise: airLowFareSearchPromise,
-    airRevalidatePromise: airRevalidatePromise
+    airRevalidatePromise: airRevalidatePromise,
+    airBookPromise: airBookPromise
 }

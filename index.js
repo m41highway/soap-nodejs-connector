@@ -19,6 +19,7 @@ soap.createClient(url, function(err, client) {
 
     console.log(client.describe().OnePoint.BasicHttpBinding_IOnePoint.AirRevalidate);
 
+    console.log(client.describe().OnePoint.BasicHttpBinding_IOnePoint.BookFlight);
 
 
     // client.CreateSession(config, function(err, result) {

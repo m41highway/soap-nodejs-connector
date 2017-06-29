@@ -1,7 +1,7 @@
 'use strict'
 
 const Promise = require('bluebird');
-const sessionManager = require('./session-manager');
+const sessionManager = require('./mistifly-proxy');
 const config = require('./config.json');
 
 const search = function () {
