@@ -17,6 +17,8 @@ soap.createClient(url, function(err, client) {
 
     console.log(client.describe().OnePoint.BasicHttpBinding_IOnePoint.AirLowFareSearch);
 
+    console.log(client.describe().OnePoint.BasicHttpBinding_IOnePoint.AirRevalidate);
+
 
 
     // client.CreateSession(config, function(err, result) {

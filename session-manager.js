@@ -35,7 +35,6 @@ const createClient = new Promise(function (resolve, reject) {
 const createSessionPromise = function(client) {
     return new Promise(function (resolve, reject){
         client.CreateSession(config, function (err, response){
-            console.log('Hey Hey');
             if (err) reject(err);
 
             return resolve(response);
@@ -61,8 +60,26 @@ const airLowFareSearchPromise = function (client, sessionId, options) {
     })
 };
 
+// -------------------------------------
+// Promisify airRevalidate
+// -------------------------------------
+const airRevalidatePromise = function (client, sessionId, options) {
+    return new Promise(function (resolve, reject) {
+
+        client.AirRevalidate(options, function(err, response) {
+            if (err) {
+                return reject(err);
+            }
+
+            return resolve(response);
+        })
+    })
+}
+
+
 module.exports = {
     createClient: createClient,
     createSessionPromise: createSessionPromise,
-    airLowFareSearchPromise: airLowFareSearchPromise
+    airLowFareSearchPromise: airLowFareSearchPromise,
+    airRevalidatePromise: airRevalidatePromise
 }
