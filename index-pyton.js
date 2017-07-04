@@ -17,8 +17,8 @@ soap.createClient(wsdl, function (err, client){
             LanguageCode: 'EN',
             Request:
             {
-                DepartureDate: '2017-09-02',
-                ReturnDate: '2017-09-04',
+                DepartureDate: '2017-09-10',
+                ReturnDate: '2017-09-14',
                 Departure: 'FRA',
                 Destination: 'LAX',
                 NumADT: 1,
@@ -39,7 +39,7 @@ soap.createClient(wsdl, function (err, client){
         if (err) console.log(err);
 
         console.log(res);
-        console.log(res.SearchFlightId);
+        console.log(res.SoapMessage.Response.SearchFlightId);
 
         let flightDetailsOption = {
             SoapMessage: {
@@ -47,7 +47,7 @@ soap.createClient(wsdl, function (err, client){
                 Password: '3844152EB5',
                 LanguageCode: 'EN',
                 Request:{
-                    FlightId: res.SearchFlightId
+                    FlightId: res.SoapMessage.Response.SearchFlightId
                 }
             }
         }
