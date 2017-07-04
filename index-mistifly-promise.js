@@ -35,12 +35,12 @@ proxy.createClient
             {
                 'origin': 'DEL',
                 'destination': 'SIN',
-                'departureDateTime': '2017-09-02T00:00:00'
+                'departureDateTime': '2017-09-04T00:00:00'
             },
             {
                 'origin': 'SIN',
                 'destination': 'DEL',
-                'departureDateTime': '2017-09-05T00:00:00'
+                'departureDateTime': '2017-09-07T00:00:00'
             }
         ],
         cabinType: 'Economy'  // [ 'Economy', 'Business', 'First' ]
@@ -100,7 +100,7 @@ proxy.createClient
 
     let options = {
         rq: {
-            FareSourceCode: simplifiedList[1].fareSourceCode,
+            FareSourceCode: simplifiedList[2].fareSourceCode,
             SessionId: tempSessionId,
             Target: 'Test'
         }
@@ -207,6 +207,8 @@ proxy.createClient
     }
 
 
+    console.log(res.BookFlightResult);
+
 // Sample successful
 // { Errors: null,
 //      Status: 'CONFIRMED',
@@ -215,9 +217,27 @@ proxy.createClient
 //      TktTimeLimit: '2017-06-30T02:29:59',
 //      UniqueID: 'MF01598517' }
 
+    console.log('----- Step 6": Order Ticket -----');
+    let options = {
+        rq: {
+            SessionId: tempSessionId,
+            UniqueID: res.BookFlightResult.UniqueID,
+            Target: 'Test'
+        }
+    }
+    return proxy.airOrderTicketPromise(clientStub, tempSessionId, options)
 
 })
 
+.then(function(res){
+
+
+    if (res.TicketOrderResult.Errors) {
+        console.log(res.TicketOrderResult.Errors.Error);
+    }
+
+    console.log(res.TicketOrderResult);
+})
 
 
 .catch( (error) => {
