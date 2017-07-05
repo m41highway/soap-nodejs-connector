@@ -70,24 +70,37 @@ proxy.createClient
         let simplifiedList = fareList.map(function(element){
             return {
                 segments: element.OriginDestinationOptions.OriginDestinationOption,
-                fareSourceCode: element.AirItineraryPricingInfo.FareSourceCode
+                fareSourceCode: element.AirItineraryPricingInfo.FareSourceCode,
+                totalFare: element.AirItineraryPricingInfo.ItinTotalFare.TotalFare,
+                isPassportMandatory: element.IsPassportMandatory,
+                ticketType: element.TicketType
             }
         })
 
-        // console.log('=======================================');
         // console.log(simplifiedList);
 
-        // simplifiedList.forEach(function(s){
+        simplifiedList.forEach(function(s){
+            console.log('=======================================');
             // console.log(s.fareSourceCode);
-            // s.segments.forEach(function(seg){
-            //     console.log(seg);
-            // })
-        // })
+            s.segments.forEach(function(seg){
+                // console.log(seg);
+                let s = seg.FlightSegments.FlightSegment;
+
+                // console.log(seg.FlightSegments.FlightSegment.DepartureAirportLocationCode);
+                // console.log(seg.FlightSegments.FlightSegment.ArrivalAirportLocationCode);
+                // console.log(seg.FlightSegments.FlightSegment.DepartureDateTime);
+                // console.log(seg.FlightSegments.FlightSegment.ArrivalDateTime);
+                // console.log(seg.FlightSegments.FlightSegment.OperatingAirline);
+                // console.log(seg.FlightSegments.FlightSegment.CabinClassCode);
+
+                console.log(`${s.DepartureAirportLocationCode} -> ${s.ArrivalAirportLocationCode} by ${s.OperatingAirline.Code} ${s.OperatingAirline.FlightNumber} (${s.OperatingAirline.Equipment}) ${s.DepartureDateTime} -> ${s.ArrivalDateTime}`);
+            })
+            console.log(`${s.totalFare.CurrencyCode} ${s.totalFare.Amount}`);
+        })
 
 
 
         // persist
-
         return simplifiedList;
     }
 })
@@ -100,7 +113,7 @@ proxy.createClient
 
     let options = {
         rq: {
-            FareSourceCode: simplifiedList[2].fareSourceCode,
+            FareSourceCode: simplifiedList[0].fareSourceCode,
             SessionId: tempSessionId,
             Target: 'Test'
         }
