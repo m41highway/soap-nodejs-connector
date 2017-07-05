@@ -14,11 +14,13 @@ const args = {
         `<LoginId>${xmlLoginId}</LoginId>` +
         `<Mode>plane</Mode>` +
         '<Origin>' +
-            `<Descriptor>LON</Descriptor>` +
+            // `<Descriptor>LON</Descriptor>` +
+            `<Descriptor>DEL</Descriptor>` +
             `<Type>airportgroup</Type>` +
         `</Origin>` +
         `<Destination>` +
-            `<Descriptor>MAD</Descriptor>` +
+            // `<Descriptor>MAD</Descriptor>` +
+            `<Descriptor>SIN</Descriptor>` +
             `<Type>airportcode</Type>` +
             `<Radius>1000</Radius>` +
         `</Destination>` +
