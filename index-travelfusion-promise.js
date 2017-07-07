@@ -21,6 +21,9 @@ const options = {
         `<OutwardDates>` +
             `<DateOfSearch>27/08/2017-10:00</DateOfSearch>` +
         `</OutwardDates>` +
+        `<ReturnDates>` +
+            `<DateOfSearch>30/08/2017-10:00</DateOfSearch>` +
+        `</ReturnDates>` +
         `<MaxChanges>1</MaxChanges>` +
         `<MaxHops>2</MaxHops>` +
         `<Timeout>40</Timeout>` +
@@ -73,17 +76,36 @@ proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
 
     jsonObj.CommandList.CheckRouting.RouterList.Router.forEach(function (element){
         console.log('********************');
-        // console.log(element.GroupList);
-        // console.log(element.GroupList.Group.OutwardList.Outward);
+        console.log(element.GroupList);
+    //     // console.log(element.GroupList.Group.OutwardList.Outward);
+        if (element.GroupList.Group){
 
-        element.GroupList.Group.OutwardList.Outward.forEach(function (s) {
-            console.log(`${s.Price.Currency} ${s.Price.Amount}`);
-            // console.log(s.SegmentList.Segment);
+            // console.log('^^^^^^^^');
 
-            s.SegmentList.Segment.forEach(function (x){
-                console.log(`${x.Origin.Code} -> ${x.Destination.Code} by ${x.Operator.Name} ${x.FlightId.Code} ${x.DepartDate} -> ${x.ArriveDate} (${x.TravelClass.TfClass})`);
+            // console.log(element.GroupList.Group.OutwardList);
+            // console.log(element.GroupList.Group.ReturnList);
+
+
+            element.GroupList.Group.OutwardList.Outward.forEach(function (s) {
+                console.log(s);
+                console.log(`(1) ${s.Price.Currency} ${s.Price.Amount}`);
+
+                // console.log(s.SegmentList.Segment);
+
+                s.SegmentList.Segment.forEach(function (x){
+                    console.log(`${x.Origin.Code} -> ${x.Destination.Code} by ${x.Operator.Name} ${x.FlightId.Code} ${x.DepartDate} -> ${x.ArriveDate} (${x.TravelClass.TfClass})`);
+                })
             })
-        })
+
+            element.GroupList.Group.ReturnList.Return.forEach(function(r){
+                console.log(r);
+                console.log(`(2) ${r.Price.Currency} ${r.Price.Amount}`);
+
+                r.SegmentList.Segment.forEach(function (x){
+                    console.log(`${x.Origin.Code} -> ${x.Destination.Code} by ${x.Operator.Name} ${x.FlightId.Code} ${x.DepartDate} -> ${x.ArriveDate} (${x.TravelClass.TfClass})`);
+                })
+            })
+        }
     })
 
     console.log('--- Summary ---');
