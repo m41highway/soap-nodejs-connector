@@ -1,6 +1,10 @@
 const proxy = require('./travelfusion-proxy');
 const config = require('./config');
 
+let routingId;
+let outwardId;
+let returnId;
+
 const options = {
     body: '<CommandList>' +
     '<StartRouting>' +
@@ -53,6 +57,7 @@ proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
     console.log('---- Routing Id ----');
     console.log(jsonObj.CommandList.StartRouting.RoutingId);
     // return jsonObj.CommandList.StartRouting.RoutingId;
+    routingId = jsonObj.CommandList.StartRouting.RoutingId;
 
     const options2 = {
         body: '<CommandList>' +
@@ -108,6 +113,9 @@ proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
                 }
             })
 
+            // Take the earliest slot for outward
+            outwardId = element.GroupList.Group.OutwardList.Outward[0].Id;
+
             element.GroupList.Group.ReturnList.Return.forEach(function(r){
                 // console.log(r);
                 console.log('---- Return Id ----', r.Id);
@@ -118,14 +126,166 @@ proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
                         console.log(`${x.Origin.Code} -> ${x.Destination.Code} by ${x.Operator.Name} ${x.FlightId.Code} ${x.DepartDate} -> ${x.ArriveDate} (${x.TravelClass.TfClass})`);
                     })
                 } else {
-                    let x = r.SegmentList.Segment;
+                    let x = r.SegmentList.Segment; // single segemtn
                     console.log(`${x.Origin.Code} -> ${x.Destination.Code} by ${x.Operator.Name} ${x.FlightId.Code} ${x.DepartDate} -> ${x.ArriveDate} (${x.TravelClass.TfClass})`);
                 }
             })
+
+            returnId = element.GroupList.Group.ReturnList.Return[ element.GroupList.Group.ReturnList.Return.length -1 ].Id;
+
         }
     })
 
     console.log('--- Summary ---');
     console.log(jsonObj.CommandList.CheckRouting.Summary);
 
+    const options3 = {
+        body: '<CommandList>' +
+                '<ProcessDetails>' +
+                `<XmlLoginId>${config.travelfusion.xmlLoginId}</XmlLoginId>` +
+                `<LoginId>${config.travelfusion.xmlLoginId}</LoginId>` +
+                `<RoutingId>${routingId}</RoutingId>` +
+                `<OutwardId>${outwardId}</OutwardId>` +
+                `<ReturnId>${returnId}</ReturnId>` +
+                `<HandoffParametersOnly>false</HandoffParametersOnly>` +
+                '</ProcessDetails>' +
+        `</CommandList>`,
+        headers: {
+            'Content-Type': 'text/xml; charset=utf-8',
+        }
+    }
+
+    // console.log(options3);
+    return proxy.selectFlightForBookingPromise(config.travelfusion.apiEndpoint, options3)
+})
+.then(function (res){
+
+    // console.log(res);
+
+    let jsonObj = JSON.parse(res);
+    console.log('------------------------------------');
+    console.log('Step 4: booking flight');
+
+    console.log(jsonObj.CommandList.ProcessDetails);
+
+    const options4 = {
+        body: '<CommandList>' +
+                '<ProcessTerms>' +
+                    `<XmlLoginId>${config.travelfusion.xmlLoginId}</XmlLoginId>` +
+                    `<LoginId>${config.travelfusion.xmlLoginId}</LoginId>` +
+                    `<RoutingId>${routingId}</RoutingId>` +
+                    // `<ReturnId>${returnId}</ReturnId>` +
+                    '<BookingProfile>' +
+                    '<TravellerList>' +
+                        '<Traveller>' +
+                        `<Age>30</Age>` +
+                        '<Name>' +
+                            `<Title>Mr</Title>` +
+                            '<NamePartList>' +
+                            `<NamePart>Andy</NamePart>` +
+                            `<NamePart>S</NamePart>` +
+                            `<NamePart>Peterson</NamePart>` +
+                            '</NamePartList>' +
+                        '</Name>' +
+                        '<CustomSupplierParameterList>' +
+                            '<CustomSupplierParameter>' +
+                            `<Name>DateOfBirth</Name>` +
+                            `<Value>16/04/1974</Value>` +
+                            '</CustomSupplierParameter>' +
+                        '</CustomSupplierParameterList>' +
+                        '</Traveller>' +
+                    '</TravellerList>' +
+                    '<ContactDetails>' +
+                        '<Name>' +
+                        `<Title>Mr</Title>` +
+                        '<NamePartList>' +
+                            `<NamePart>Andy</NamePart>` +
+                            `<NamePart>S</NamePart>` +
+                            `<NamePart>Peterson</NamePart>` +
+                        '</NamePartList>' +
+                        '</Name>' +
+                        '<Address>' +
+                        `<Company></Company>` +
+                        `<Flat>22A</Flat>` +
+                        `<BuildingName>Dean's Court</BuildingName>` +
+                        `<BuildingNumber>3</BuildingNumber>` +
+                        `<Street>St. George Street</Street>` +
+                        `<Locality>Redland</Locality>` +
+                        `<City>Bristol</City>` +
+                        `<Province>Avon</Province>` +
+                        `<Postcode>BS8 6GC</Postcode>` +
+                        `<CountryCode>GB</CountryCode>` +
+                        '</Address>' +
+                        '<HomePhone>' +
+                        `<InternationalCode>0044</InternationalCode>` +
+                        `<AreaCode>12332</AreaCode>` +
+                        `<Number>232223</Number>` +
+                        `<Extension>3322</Extension>` +
+                        '</HomePhone>' +
+                        `<Email>andy@hotmail.com</Email>` +
+                    '</ContactDetails>' +
+                    '<BillingDetails>' +
+                        '<Name>' +
+                        `<Title>Mr</Title>` +
+                        '<NamePartList>' +
+                            `<NamePart>Andy</NamePart>` +
+                            `<NamePart>S</NamePart>` +
+                            `<NamePart>Peterson</NamePart>` +
+                        '</NamePartList>' +
+                        '</Name>' +
+                        '<Address>' +
+                        `<Company></Company>` +
+                        `<Flat>22A</Flat>` +
+                        `<BuildingName>Dean's Court</BuildingName>` +
+                        `<BuildingNumber>3</BuildingNumber>` +
+                        `<Street>St. George Street</Street>` +
+                        `<Locality>Redland</Locality>` +
+                        `<City>Bristol</City>` +
+                        `<Province>Avon</Province>` +
+                        `<Postcode>BS8 6GC</Postcode>` +
+                        `<CountryCode>GB</CountryCode>` +
+                        '</Address>' +
+                        '<CreditCard>' +
+                        `<Company></Company>` +
+                        '<NameOnCard>' +
+                            '<NamePartList>' +
+                            `<NamePart>Mr Andy S Peterson</NamePart>` +
+                            '</NamePartList>' +
+                        '</NameOnCard>' +
+                        `<Number>5105105105105100</Number>` +
+                        `<SecurityCode>887</SecurityCode>` +
+                        `<ExpiryDate>09/19</ExpiryDate>` +
+                        `<StartDate>01/16</StartDate>` +
+                        `<CardType>MasterCard</CardType>` +
+                        `<IssueNumber>0</IssueNumber>` +
+                        '</CreditCard>' +
+                    '</BillingDetails>' +
+                    '</BookingProfile>' +
+                '</ProcessTerms>' +
+
+
+
+        `</CommandList>`,
+        headers: {
+            'Content-Type': 'text/xml; charset=utf-8',
+        }
+    }
+
+    return proxy.submitBookingDetails(config.travelfusion.apiEndpoint, options4)
+})
+.then(function (res){
+    let jsonObj = JSON.parse(res);
+
+    console.log('-------------------------------------');
+    console.log('Step 5: Submit passengers details');
+
+    console.log(jsonObj);
+    // console.log(jsonObj.CommandList.DataValidationFailure);
+    // console.log(jsonObj.CommandList.DataValidationFailure.ProcessTerms.BookingProfile.TravellerList);
+    // console.log(jsonObj.CommandList.DataValidationFailure.ProcessTerms.BookingProfile.ContactDetails);
+    // console.log(jsonObj.CommandList.DataValidationFailure.ProcessTerms.BookingProfile.BillingDetails);
+    console.log(jsonObj.CommandList.CommandExecutionFailure.ProcessTerms);
+
+
+    console.log(jsonObj.CommandList.GeneralInfoItemList.GeneralInfoItem);
 })
