@@ -9,12 +9,14 @@ const options = {
         `<Mode>plane</Mode>` +
         '<Origin>' +
             // `<Descriptor>LON</Descriptor>` +
-            `<Descriptor>DEL</Descriptor>` +
+            // `<Descriptor>DEL</Descriptor>` +
+            `<Descriptor>HKG</Descriptor>` +
             `<Type>airportgroup</Type>` +
         `</Origin>` +
         `<Destination>` +
             // `<Descriptor>MAD</Descriptor>` +
-            `<Descriptor>SIN</Descriptor>` +
+            // `<Descriptor>SIN</Descriptor>` +
+            `<Descriptor>NRT</Descriptor>` +
             `<Type>airportcode</Type>` +
             `<Radius>1000</Radius>` +
         `</Destination>` +
@@ -46,10 +48,11 @@ proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
 
 .then (function(res){
     let jsonObj = JSON.parse(res);
-    console.log(jsonObj.CommandList);
+    // console.log(jsonObj.CommandList);
 
+    console.log('---- Routing Id ----');
+    console.log(jsonObj.CommandList.StartRouting.RoutingId);
     // return jsonObj.CommandList.StartRouting.RoutingId;
-
 
     const options2 = {
         body: '<CommandList>' +
@@ -76,7 +79,7 @@ proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
 
     jsonObj.CommandList.CheckRouting.RouterList.Router.forEach(function (element){
         console.log('********************');
-        console.log(element.GroupList);
+        // console.log(element.GroupList);
     //     // console.log(element.GroupList.Group.OutwardList.Outward);
         if (element.GroupList.Group){
 
@@ -87,23 +90,37 @@ proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
 
 
             element.GroupList.Group.OutwardList.Outward.forEach(function (s) {
-                console.log(s);
+                // console.log(s);
+                console.log('---- Outward Id ----', s.Id);
                 console.log(`(1) ${s.Price.Currency} ${s.Price.Amount}`);
 
                 // console.log(s.SegmentList.Segment);
+                // console.log(s.SegmentList);
 
-                s.SegmentList.Segment.forEach(function (x){
+                if (Array.isArray(s.SegmentList.Segment)){      // mulitple segment
+                    s.SegmentList.Segment.forEach(function (x){
+                        console.log(`${x.Origin.Code} -> ${x.Destination.Code} by ${x.Operator.Name} ${x.FlightId.Code} ${x.DepartDate} -> ${x.ArriveDate} (${x.TravelClass.TfClass})`);
+                    })
+                } else {
+                    // should be an object, single segment
+                    let x = s.SegmentList.Segment;
                     console.log(`${x.Origin.Code} -> ${x.Destination.Code} by ${x.Operator.Name} ${x.FlightId.Code} ${x.DepartDate} -> ${x.ArriveDate} (${x.TravelClass.TfClass})`);
-                })
+                }
             })
 
             element.GroupList.Group.ReturnList.Return.forEach(function(r){
-                console.log(r);
+                // console.log(r);
+                console.log('---- Return Id ----', r.Id);
                 console.log(`(2) ${r.Price.Currency} ${r.Price.Amount}`);
 
-                r.SegmentList.Segment.forEach(function (x){
+                if (Array.isArray(r.SegmentList.Segment)) {      // Array, multiple segment
+                    r.SegmentList.Segment.forEach(function (x){
+                        console.log(`${x.Origin.Code} -> ${x.Destination.Code} by ${x.Operator.Name} ${x.FlightId.Code} ${x.DepartDate} -> ${x.ArriveDate} (${x.TravelClass.TfClass})`);
+                    })
+                } else {
+                    let x = r.SegmentList.Segment;
                     console.log(`${x.Origin.Code} -> ${x.Destination.Code} by ${x.Operator.Name} ${x.FlightId.Code} ${x.DepartDate} -> ${x.ArriveDate} (${x.TravelClass.TfClass})`);
-                })
+                }
             })
         }
     })
