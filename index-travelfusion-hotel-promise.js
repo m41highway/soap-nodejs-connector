@@ -1,26 +1,27 @@
 const proxy = require('./travelfusion-proxy');
 const config = require('./config');
 
+// let city = 'Lon';
+let city = 'Hkg';
 
 const options = {
-        body: '<CommandList>' +
-                '<GetHotelIdList>' +
-                    `<XmlLoginId>${config.travelfusion.xmlLoginId}</XmlLoginId>` +
-                    `<LoginId>${config.travelfusion.xmlLoginId}</LoginId>` +
-                    `<IsTest>true</IsTest>` +
-                '</GetHotelIdList>' +
-        `</CommandList>`,
-        headers: {
-            'Content-Type': 'text/xml; charset=utf-8',
-        }
+
+    body: `<ResolveLocationRequest token="${config.travelfusion.hotels.token}" xmlns="http://www.travelfusion.com/xml/api/simple">` +
+            `<text>${city}</text>` +
+            `<maxOptions>10</maxOptions>` +
+            `<language>EN,FI</language>` +
+            `<showSubLocations>true</showSubLocations>` +
+        `</ResolveLocationRequest>`,
+    headers: {
+        'Content-Type': 'text/xml; charset=utf-8',
     }
+}
 
-proxy.getHotelListPromise(config.travelfusion.apiEndpoint, options)
 
-.then(function (res) {
+
+proxy.getHotelLocationCodePromise(config.travelfusion.hotels.apiEndpoint, options)
+.then(function (res){
     let jsonObj = JSON.parse(res);
 
-    console.log(jsonObj);
-
-    console.log(jsonObj.CommandList.GeneralInfoItemList.GeneralInfoItem);
+    console.log(jsonObj.ResolveLocationResponse.locations);
 })

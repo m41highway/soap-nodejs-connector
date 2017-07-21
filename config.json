@@ -6,7 +6,13 @@
         "url": "http://onepointdemo.myfarebox.com/V2/OnePoint.svc?wsdl"
     },
     "travelfusion": {
-        "apiEndpoint": "https://api.travelfusion.com",
-        "xmlLoginId": "2OJBM9GHGS97N0E5"
+        "flights": {
+            "apiEndpoint": "https://api.travelfusion.com",
+            "xmlLoginId": "2OJBM9GHGS97N0E5"
+        },
+        "hotels": {
+            "apiEndpoint": "http://api.travelfusion.com/api-v2/",
+            "token": "TvLwDF_pxUECUxcEXUaHDm06Mp7jIB6nTY3DqzeEJ6NG"
+        }
     }
 }

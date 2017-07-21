@@ -85,7 +85,29 @@ const submitBookingDetails = function (url, options){
     });
 }
 
+// ----------------------------
+// Hotel APIs
+// ----------------------------
 const getHotelListPromise = function (url, options) {
+    return new Promise(function(resolve, reject){
+        httpreq.post(url, options, function (err, res){
+            if (err) {
+                console.log(err);
+                return reject(err);
+            }
+
+            if(res.statusCode != 200) console.log('Problem occurs!')
+
+            let cleanBody = removeNewline(res.body);
+
+            let json = parser.toJson(cleanBody);
+
+            return resolve(json);
+        });
+    });
+}
+
+const getHotelLocationCodePromise = function (url, options) {
     return new Promise(function(resolve, reject){
         httpreq.post(url, options, function (err, res){
             if (err) {
@@ -110,5 +132,6 @@ module.exports = {
     selectFlightForBookingPromise: selectFlightForBookingPromise,
     submitBookingDetails: submitBookingDetails,
 
-    getHotelListPromise: getHotelListPromise
+    getHotelListPromise: getHotelListPromise,
+    getHotelLocationCodePromise: getHotelLocationCodePromise
 }

@@ -48,7 +48,7 @@ const options = {
 
 
 
-proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
+proxy.submitSearchRequestPromise(config.travelfusion.flights.apiEndpoint, options)
 
 .then (function(res){
     let jsonObj = JSON.parse(res);
@@ -72,7 +72,7 @@ proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
         }
     }
 
-    return proxy.submitResultRequestPromise(config.travelfusion.apiEndpoint, options2)
+    return proxy.submitResultRequestPromise(config.travelfusion.flights.apiEndpoint, options2)
 })
 
 .then(function (res){
@@ -156,7 +156,7 @@ proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
     }
 
     // console.log(options3);
-    return proxy.selectFlightForBookingPromise(config.travelfusion.apiEndpoint, options3)
+    return proxy.selectFlightForBookingPromise(config.travelfusion.flights.apiEndpoint, options3)
 })
 .then(function (res){
 
@@ -271,7 +271,7 @@ proxy.submitSearchRequestPromise(config.travelfusion.apiEndpoint, options)
         }
     }
 
-    return proxy.submitBookingDetails(config.travelfusion.apiEndpoint, options4)
+    return proxy.submitBookingDetails(config.travelfusion.flights.apiEndpoint, options4)
 })
 .then(function (res){
     let jsonObj = JSON.parse(res);

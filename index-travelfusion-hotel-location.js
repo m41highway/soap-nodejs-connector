@@ -1,12 +1,11 @@
-var httpreq = require('httpreq');
+const httpreq = require('httpreq');
+const config = require('./config.json');
 
-let url = 'http://api.travelfusion.com/api-v2/';
-
-httpreq.post(url, {
+httpreq.post(config.travelfusion.hotels.apiEndpoint, {
     headers: {
         'Content-Type': 'text/xml; charset=utf-8',
     },
-    body: '<ResolveLocationRequest token="TvLwDF_pxUECUxcEXUaHDm06Mp7jIB6nTY3DqzeEJ6NG" xmlns="http://www.travelfusion.com/xml/api/simple"><text>Lon</text><maxOptions>10</maxOptions><language>EN,FI</language><showSubLocations>true</showSubLocations></ResolveLocationRequest>'
+    body: `<ResolveLocationRequest token="${config.travelfusion.hotels.token}" xmlns="http://www.travelfusion.com/xml/api/simple"><text>Lon</text><maxOptions>10</maxOptions><language>EN,FI</language><showSubLocations>true</showSubLocations></ResolveLocationRequest>`
 }, function (err, res){
     if (err) {
         console.log(err);
@@ -14,4 +13,5 @@ httpreq.post(url, {
         console.log(res.body);
     }
 })
+
 
