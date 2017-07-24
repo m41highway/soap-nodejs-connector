@@ -1,8 +1,8 @@
 const proxy = require('./travelfusion-proxy');
 const config = require('./config');
 
-// let city = 'Lon';
-let city = 'Hkg';
+let city = 'Lon';
+// let city = 'Hkg';
 
 const options = {
 
@@ -32,31 +32,32 @@ proxy.getHotelLocationCodePromise(config.travelfusion.hotels.apiEndpoint, option
 
     // let jsonObj = JSON.parse(res);
     let jsonObj = JSON.parse(res.body);
-    // console.log(jsonObj.ResolveLocationResponse.locations);
+    console.log(jsonObj.ResolveLocationResponse.locations);
     console.log('Real sid', jsonObj.ResolveLocationResponse.sid);
 
 
 
     const options2 = {
-        body: `<GetHotelsRequest sid="${jsonObj.ResolveLocationResponse.sid}" token="${config.travelfusion.hotels.token}" xmlns="http://www.travelfusion.com/xml/api/simple">` +
+        // body: `<GetHotelsRequest sid="${jsonObj.ResolveLocationResponse.sid}" token="${config.travelfusion.hotels.token}" xmlns="http://www.travelfusion.com/xml/api/simple">` +
+        body: `<GetHotelsRequest token="${config.travelfusion.hotels.token}" xmlns="http://www.travelfusion.com/xml/api/simple">` +
             '<location>' +
             //<!-- Submit only 1 of the following location identifiers -->
-            `<city code="LON"/>` +
-            `<airport code="LHR"/>` +
-            `<hotel code="00005gaw87"/>` +
-            `<coordinate lat="0.34234" lon="65.283"/>` +
-            `<locationResolutionResultItem id="6296680"/>` +
+            // `<city code="LON"/>` +
+            // `<airport code="LCY"/>` +
+            //`<hotel code="00005gaw87"/>` +
+            //`<coordinate lat="0.34234" lon="65.283"/>` +
+            `<locationResolutionResultItem id="6296599"/>` +  // LCY
             '</location>' +
-            `<radius>xxx</radius>` +        // in metres. If omitted, default logic will be used.
-            `<date>2017-09-10</date>` +
-            `<duration>4</duration>` +
+            // `<radius>3000</radius>` +        // in metres. If omitted, default logic will be used.
+            `<date>2017-08-10</date>` +
+            `<duration>2</duration>` +
             '<rooms>' +
                 '<room>' +
                     //<!-- The ages of the people that will be staying in the room -->
                     '<ages>' +
                     `<age>30</age>` +
                     `<age>30</age>` +
-                    `<age>1</age>` +
+                    // `<age>1</age>` +
                     '</ages>' +
                 '</room>' +
             '</rooms>' +
@@ -79,7 +80,12 @@ proxy.getHotelLocationCodePromise(config.travelfusion.hotels.apiEndpoint, option
 
 .then(function (res){
 
-    // console.log(res);
+    console.log(res);
     let jsonObj = JSON.parse(res);
-    console.log(jsonObj.body);
+    console.log(jsonObj.GetHotelsResponse.sid);
+    console.log(jsonObj.GetHotelsResponse.resultInfo);
+    console.log(jsonObj.GetHotelsResponse.resultInfo.supplierResultInfo.supplier);
+    console.log(jsonObj.GetHotelsResponse.results);
+
+
 })

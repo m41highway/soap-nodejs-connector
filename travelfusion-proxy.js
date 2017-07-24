@@ -118,7 +118,7 @@ const getHotelLocationCodePromise = function (url, options) {
             if(res.statusCode != 200) console.log('Problem occurs!')
 
             let cleanBody = removeNewline(res.body);
-console.log(0000, res);
+// console.log(0000, res);
             let json = parser.toJson(cleanBody);
 
             let result = {
@@ -126,7 +126,7 @@ console.log(0000, res);
                 sid: res.headers['set-cookie']
             }
 
-            console.log(result);
+            // console.log(result);
 
             // return resolve(json);
             return resolve(result);
@@ -138,11 +138,11 @@ const searchHotelPromise = function (url, options) {
     return new Promise(function(resolve, reject){
         httpreq.post(url, options, function (err, res){
             if (err) {
-                console.log(1111);
-                console.log(err);
+                // console.log(1111);
+                // console.log(err);
                 return reject(err);
             }
-console.log(2222, res);
+// console.log(2222, res);
             if(res.statusCode != 200) console.log('Problem occurs!')
 
             let cleanBody = removeNewline(res.body);
