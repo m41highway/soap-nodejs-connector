@@ -8,8 +8,8 @@ let returnId;
 const options = {
     body: '<CommandList>' +
     '<StartRouting>' +
-        `<XmlLoginId>${config.travelfusion.xmlLoginId}</XmlLoginId>` +
-        `<LoginId>${config.travelfusion.xmlLoginId}</LoginId>` +
+        `<XmlLoginId>${config.travelfusion.flights.xmlLoginId}</XmlLoginId>` +
+        `<LoginId>${config.travelfusion.flights.xmlLoginId}</LoginId>` +
         `<Mode>plane</Mode>` +
         '<Origin>' +
             // `<Descriptor>LON</Descriptor>` +
