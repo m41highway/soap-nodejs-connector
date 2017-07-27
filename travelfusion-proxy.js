@@ -118,7 +118,12 @@ const getHotelLocationCodePromise = function (url, options) {
             if(res.statusCode != 200) console.log('Problem occurs!')
 
             let cleanBody = removeNewline(res.body);
-// console.log(0000, res);
+
+            console.log('====================================');
+            console.log(res);
+            console.log('====================================');
+
+
             let json = parser.toJson(cleanBody);
 
             let result = {
@@ -142,16 +147,35 @@ const searchHotelPromise = function (url, options) {
                 // console.log(err);
                 return reject(err);
             }
-// console.log(2222, res);
+            console.log('====================================');
+            console.log(res);
+            console.log('====================================');
+
             if(res.statusCode != 200) console.log('Problem occurs!')
 
             let cleanBody = removeNewline(res.body);
 
+            // console.log(cleanBody);
+
             let json = parser.toJson(cleanBody);
 
-            return resolve(json);
+            console.log(json);
+
+            result = {
+                body: json,
+                cookies: res.cookies
+            }
+
+            return resolve(result);
         });
     });
+}
+
+
+const delay = function (t) {
+   return new Promise(function(resolve) {
+       setTimeout(resolve, t)
+   });
 }
 
 module.exports = {
@@ -162,5 +186,7 @@ module.exports = {
 
     getHotelListPromise: getHotelListPromise,
     getHotelLocationCodePromise: getHotelLocationCodePromise,
-    searchHotelPromise: searchHotelPromise
+    searchHotelPromise: searchHotelPromise,
+
+    delay, delay
 }

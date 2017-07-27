@@ -15,12 +15,14 @@ const args = {
         `<Mode>plane</Mode>` +
         '<Origin>' +
             // `<Descriptor>LON</Descriptor>` +
-            `<Descriptor>DEL</Descriptor>` +
+            // `<Descriptor>DEL</Descriptor>` +
+            `<Descriptor>HKG</Descriptor>` +
             `<Type>airportgroup</Type>` +
         `</Origin>` +
         `<Destination>` +
             // `<Descriptor>MAD</Descriptor>` +
-            `<Descriptor>SIN</Descriptor>` +
+            // `<Descriptor>SIN</Descriptor>` +
+            `<Descriptor>NRT</Descriptor>` +
             `<Type>airportcode</Type>` +
             `<Radius>1000</Radius>` +
         `</Destination>` +
