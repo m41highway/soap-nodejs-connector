@@ -12,7 +12,8 @@
         },
         "hotels": {
             "apiEndpoint": "http://api.travelfusion.com/api-v2/",
-            "token": "TvLwDF_pxUECUxcEXUaHDm06Mp7jIB6nTY3DqzeEJ6NG"
+            // "token": "TvLwDF_pxUECUxcEXUaHDm06Mp7jIB6nTY3DqzeEJ6NG"
+            "token": "wbDFl4VuzOCWXD7RZHMEDi6AqfI9UwEOQc2RK.L9E28G"
         }
     }
 }
