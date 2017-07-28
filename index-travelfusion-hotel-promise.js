@@ -37,10 +37,10 @@ console.log(res);
             '<location>' +
             //<!-- Submit only 1 of the following location identifiers -->
             // `<city code="LON"/>` +
-            // `<airport code="LON"/>` +
+            `<airport code="HKG"/>` +
             //`<hotel code="00005gaw87"/>` +
             //`<coordinate lat="0.34234" lon="65.283"/>` +
-            `<locationResolutionResultItem id="6296599"/>` +  // LCY
+            // `<locationResolutionResultItem id="6296599"/>` +  // LCY
             '</location>' +
             // `<radius>3000</radius>` +        // in metres. If omitted, default logic will be used.
             `<date>2017-09-10</date>` +
@@ -55,6 +55,7 @@ console.log(res);
                     '</ages>' +
                 '</room>' +
             '</rooms>' +
+            `<currency>HKD</currency>` +
             //<!-- special parameters may be necessary in certain special cases. Please discuss with Travelfusion if you feel that you need to submit any extra information such as personal logins to supplier systems -->
             // '<specialParameters>' +
             //     `<parameter type="supplier" name="_supplier_name_._param_name_">__some_value__</parameter>` +
