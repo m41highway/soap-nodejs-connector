@@ -62,8 +62,8 @@ proxy.submitSearchRequestPromise(config.travelfusion.flights.apiEndpoint, option
     const options2 = {
         body: '<CommandList>' +
             '<CheckRouting>' +
-                `<XmlLoginId>${config.travelfusion.xmlLoginId}</XmlLoginId>` +
-                `<LoginId>${config.travelfusion.xmlLoginId}</LoginId>` +
+                `<XmlLoginId>${config.travelfusion.flights.xmlLoginId}</XmlLoginId>` +
+                `<LoginId>${config.travelfusion.flights.xmlLoginId}</LoginId>` +
                 `<RoutingId>${jsonObj.CommandList.StartRouting.RoutingId}</RoutingId>` +
             `</CheckRouting>` +
         `</CommandList>`,
@@ -81,7 +81,7 @@ proxy.submitSearchRequestPromise(config.travelfusion.flights.apiEndpoint, option
     console.log('------------------------------------');
     console.log('Step 3: submit result request');
     // console.log(jsonObj.CommandList.CheckRouting.RouterList);
-
+    // console.log(jsonObj.CommandList.CommandExecutionFailure.CheckRouting);
     jsonObj.CommandList.CheckRouting.RouterList.Router.forEach(function (element){
         console.log('********************');
         // console.log(element.GroupList);
