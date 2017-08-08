@@ -1,7 +1,7 @@
 var httpreq = require('httpreq');
 
 httpreq.post('https://api.travelfusion.com',{
-  body: '<?xml version="1.0" encoding="UTF-8"?><CommandList><Login><Username>travieapp</Username><Password>54av83ap0</Password></Login></CommandList>',
+  body: '<?xml version="1.0" encoding="UTF-8"?><CommandList><Login><Username>travieappflight</Username><Password>KtG841C36q</Password></Login></CommandList>',
   headers:{
     'Content-Type': 'text/xml; charset=utf-8',
   }},
