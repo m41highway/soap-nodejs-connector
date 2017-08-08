@@ -8,12 +8,11 @@
     "travelfusion": {
         "flights": {
             "apiEndpoint": "https://api.travelfusion.com",
-            "xmlLoginId": "2OJBM9GHGS97N0E5"
+            "xmlLoginId": "FKRMZSF5L9DYPBKB"
         },
         "hotels": {
             "apiEndpoint": "http://api.travelfusion.com/api-v2/",
-            // "token": "TvLwDF_pxUECUxcEXUaHDm06Mp7jIB6nTY3DqzeEJ6NG"
-            "token": "wbDFl4VuzOCWXD7RZHMEDi6AqfI9UwEOQc2RK.L9E28G"
+            "token": "lhNUKwALSUPDYd1JEqkXOcTb99wSxVns2Rfnv4YQk6DG"
         }
     }
 }
