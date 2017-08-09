@@ -33,6 +33,7 @@ const options = {
         `<MaxChanges>1</MaxChanges>` +
         `<MaxHops>2</MaxHops>` +
         `<Timeout>40</Timeout>` +
+        `<TravelClass>First</TravelClass>` +  // Best Effort Only
         `<TravellerList>` +
             `<Traveller>` +
                 `<Age>30</Age>` +
